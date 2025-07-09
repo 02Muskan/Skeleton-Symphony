@@ -30,7 +30,7 @@ export default function SampleTable() {
                     <TableCell>
                         <div className="flex items-center gap-3">
                           <Avatar>
-                            <AvatarImage src={`https://placehold.co/40x40.png`} alt="Avatar" data-ai-hint="person face" />
+                            <AvatarImage src="/avatar.png" alt="Avatar" data-ai-hint="person face" />
                             <AvatarFallback>{invoice.customerInitials}</AvatarFallback>
                           </Avatar>
                           <span className="font-medium">{invoice.customerName}</span>

@@ -39,7 +39,7 @@ export default function Home() {
             <h2 className="text-3xl font-bold text-center mb-8 font-headline md:text-4xl">Performance Comparison</h2>
 
             <Tabs defaultValue="card" className="w-full">
-              <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 mx-auto sm:w-3/4 md:w-1/2">
+              <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 mx-auto  gap-2">
                 <TabsTrigger value="card">Card Component</TabsTrigger>
                 <TabsTrigger value="table">Table Component</TabsTrigger>
                 <TabsTrigger value="review">Review Component</TabsTrigger>

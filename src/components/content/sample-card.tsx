@@ -10,7 +10,7 @@ export default function SampleCard() {
       <CardHeader>
         <div className="flex items-center space-x-4">
           <Avatar>
-            <AvatarImage src="https://placehold.co/48x48.png" alt="User Avatar" data-ai-hint="person face" />
+            <AvatarImage src="/avatar.png" alt="User Avatar" data-ai-hint="person face" />
             <AvatarFallback>JD</AvatarFallback>
           </Avatar>
           <div>
@@ -21,13 +21,8 @@ export default function SampleCard() {
       </CardHeader>
       <CardContent className="p-0">
         <div className="aspect-video relative w-full">
-            <Image 
-              src="https://placehold.co/600x337.png" 
-              alt="Sample image" 
-              fill
-              className="object-cover"
-              data-ai-hint="nature landscape"
-            />
+        <img src="/lone-tree.jpg" alt="Sample image" style={{ objectFit: 'cover', width: '100%', height: 'auto' }} />
+
         </div>
         <div className="p-6">
             <p className="text-foreground">This is the actual content of the card. It loads after a simulated delay to demonstrate the effect of skeleton screens. Pretty cool, right?</p>

@@ -39,7 +39,7 @@ function DraggableTool({ type, icon, name }: { type: ComponentType; icon: React.
   });
 
   return (
-    <div ref={setNodeRef} {...listeners} {...attributes} className="flex items-center gap-3 p-2 rounded-md bg-muted hover:bg-accent cursor-grab">
+    <div ref={setNodeRef} {...listeners} {...attributes} className="flex items-center gap-3 p-2 rounded-md bg-muted hover:bg-[#FFD5AB] cursor-grab">
       {icon}
       <span>{name}</span>
     </div>
@@ -99,7 +99,7 @@ function SortableItem({ id, type }: { id: string; type: ComponentType }) {
 
   return (
     <div ref={setNodeRef} style={style} className="relative p-2 bg-card border rounded-lg shadow-sm">
-      <div {...attributes} {...listeners} className="absolute top-1/2 -translate-y-1/2 right-2 cursor-grab p-1 text-muted-foreground hover:bg-accent rounded-md">
+      <div {...attributes} {...listeners} className="absolute top-1/2 -translate-y-1/2 right-2 cursor-grab p-1 text-muted-foreground hover:bg-[#FFD5AB] rounded-md">
         <GripVertical className="h-5 w-5" />
       </div>
       {renderComponent()}

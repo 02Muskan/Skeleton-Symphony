@@ -84,7 +84,7 @@ export default function AnimationCustomizer() {
               <SelectValue placeholder="Style" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="subtle">Subtle</SelectItem>
+              <SelectItem value="subtle" className="hover:bg-[#FFD5AB]">Subtle</SelectItem>
               <SelectItem value="playful">Playful</SelectItem>
               <SelectItem value="dramatic">Dramatic</SelectItem>
               <SelectItem value="energetic">Energetic</SelectItem>
