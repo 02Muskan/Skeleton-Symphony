@@ -20,6 +20,12 @@ const animationVariants: Record<AnimationStyle, any> = {
     opacity: [0.4, 1, 0.4],
     transition: { duration: 1.2, repeat: Infinity, ease: 'circInOut' },
   },
+  energetic: {
+    opacity: [0.3, 1, 0.3],
+    scale: [1, 1.02, 1],
+    transition: { duration: 0.8, repeat: Infinity, ease: 'linear' },
+  },
+  none: {},
 };
 
 function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {

@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState } from 'react';
 
-export type AnimationStyle = 'subtle' | 'playful' | 'dramatic';
+export type AnimationStyle = 'subtle' | 'playful' | 'dramatic' | 'energetic' | 'none';
 
 interface AnimationContextType {
   style: AnimationStyle;

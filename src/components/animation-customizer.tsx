@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAnimation, AnimationStyle } from '@/contexts/animation-context';
 
-const animationStyles = {
+const animationStyles: Record<AnimationStyle, any> = {
   subtle: {
     dots: {
       animate: { y: [0, -5, 0] },
@@ -46,6 +46,27 @@ const animationStyles = {
       transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
     },
   },
+  energetic: {
+    dots: {
+      animate: (i: number) => ({
+        y: [0, -20, 0],
+        rotate: [0, 180, 360],
+        transition: { delay: i * 0.1, duration: 0.8, repeat: Infinity, ease: 'easeInOut' },
+      }),
+    },
+    pulse: {
+      animate: {
+        scale: [1, 1.15, 1],
+        opacity: [1, 0.8, 1],
+        backgroundColor: ['hsl(var(--primary))', 'hsl(var(--accent))', 'hsl(var(--primary))'],
+      },
+      transition: { duration: 1, repeat: Infinity, ease: 'linear' },
+    },
+  },
+  none: {
+    dots: { animate: {}, transition: { duration: 0 } },
+    pulse: { animate: {}, transition: { duration: 0 } },
+  },
 };
 
 export default function AnimationCustomizer() {
@@ -66,6 +87,8 @@ export default function AnimationCustomizer() {
               <SelectItem value="subtle">Subtle</SelectItem>
               <SelectItem value="playful">Playful</SelectItem>
               <SelectItem value="dramatic">Dramatic</SelectItem>
+              <SelectItem value="energetic">Energetic</SelectItem>
+              <SelectItem value="none">None</SelectItem>
             </SelectContent>
           </Select>
         </div>
