@@ -10,6 +10,7 @@ import AnimationCustomizer from '@/components/animation-customizer';
 import { Separator } from '@/components/ui/separator';
 import LayoutBuilder from '@/components/layout-builder';
 import { AnimationProvider } from '@/contexts/animation-context';
+import AIGenerator from '@/components/ai-generator';
 
 const LazySampleCard = React.lazy(() => import('@/components/content/sample-card'));
 const LazySampleTable = React.lazy(() => import('@/components/content/sample-table'));
@@ -29,6 +30,12 @@ export default function Home() {
 
           <section className="mb-12">
               <LayoutBuilder />
+          </section>
+
+          <Separator className="my-12" />
+
+          <section className="mb-12">
+              <AIGenerator />
           </section>
 
           <Separator className="my-12" />
