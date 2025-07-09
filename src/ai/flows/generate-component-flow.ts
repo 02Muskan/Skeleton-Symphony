@@ -10,12 +10,12 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-export const GenerateComponentInputSchema = z.object({
+const GenerateComponentInputSchema = z.object({
   description: z.string().describe('A detailed description of the UI component to generate.'),
 });
 export type GenerateComponentInput = z.infer<typeof GenerateComponentInputSchema>;
 
-export const GenerateComponentOutputSchema = z.object({
+const GenerateComponentOutputSchema = z.object({
   componentCode: z.string().describe('The full TypeScript code for the React component.'),
   skeletonCode: z.string().describe('The full TypeScript code for the corresponding skeleton component.'),
 });
