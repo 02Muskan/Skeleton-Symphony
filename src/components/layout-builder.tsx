@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   DndContext,
   DragEndEvent,
@@ -18,7 +18,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { GripVertical, Layout, Rows, FileText } from 'lucide-react';
+import { GripVertical, PanelsTopLeft, Rows3, FileText, Loader2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import CardSkeleton from '@/components/skeletons/card-skeleton';
 import TableSkeleton from '@/components/skeletons/table-skeleton';
@@ -27,8 +27,8 @@ import { Skeleton } from './ui/skeleton';
 type ComponentType = 'Card' | 'Table' | 'Form';
 
 const availableComponents: { type: ComponentType; icon: React.ReactNode; name: string }[] = [
-  { type: 'Card', icon: <Layout className="h-5 w-5" />, name: 'Info Card' },
-  { type: 'Table', icon: <Rows className="h-5 w-5" />, name: 'Data Table' },
+  { type: 'Card', icon: <PanelsTopLeft className="h-5 w-5" />, name: 'Info Card' },
+  { type: 'Table', icon: <Rows3 className="h-5 w-5" />, name: 'Data Table' },
   { type: 'Form', icon: <FileText className="h-5 w-5" />, name: 'Input Form' },
 ];
 
@@ -146,6 +146,12 @@ function Canvas({ items }: { items: { id: string; type: ComponentType }[] }) {
 
 export default function LayoutBuilder() {
   const [canvasItems, setCanvasItems] = useState<{ id: string; type: ComponentType }[]>([]);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // This effect runs once on the client after the component mounts
+    setIsClient(true);
+  }, []);
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -192,6 +198,27 @@ export default function LayoutBuilder() {
     }
   }
 
+  const DragAndDropPlaceholder = () => (
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="md:col-span-1 p-4 rounded-lg border bg-muted/50">
+            <h3 className="text-lg font-semibold mb-4">Toolbox</h3>
+            <div className="space-y-3">
+                {availableComponents.map(comp => (
+                    <div key={comp.type} className="flex items-center gap-3 p-2 rounded-md bg-muted">
+                        {comp.icon}
+                        <span>{comp.name}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+        <div className="md:col-span-2 lg:col-span-3 p-4 rounded-lg border-2 border-dashed min-h-[400px] bg-background/50 flex items-center justify-center">
+            <div className="flex flex-col items-center justify-center text-muted-foreground text-center">
+                <Loader2 className="h-8 w-8 animate-spin mb-4" />
+                <p>Loading Layout Builder...</p>
+            </div>
+        </div>
+    </div>
+  );
 
   return (
     <Card className="w-full">
@@ -200,12 +227,16 @@ export default function LayoutBuilder() {
             <CardDescription>Drag components from the toolbox to the canvas to build a custom layout skeleton.</CardDescription>
         </CardHeader>
         <CardContent>
-            <DndContext sensors={sensors} onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                    <Toolbox />
-                    <Canvas items={canvasItems} />
-                </div>
-            </DndContext>
+            {isClient ? (
+                <DndContext sensors={sensors} onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
+                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                        <Toolbox />
+                        <Canvas items={canvasItems} />
+                    </div>
+                </DndContext>
+            ) : (
+                <DragAndDropPlaceholder />
+            )}
         </CardContent>
     </Card>
   );
