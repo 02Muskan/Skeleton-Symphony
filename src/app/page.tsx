@@ -8,6 +8,7 @@ import Header from '@/components/header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AnimationCustomizer from '@/components/animation-customizer';
 import { Separator } from '@/components/ui/separator';
+import LayoutBuilder from '@/components/layout-builder';
 
 const LazySampleCard = React.lazy(() => import('@/components/content/sample-card'));
 const LazySampleTable = React.lazy(() => import('@/components/content/sample-table'));
@@ -20,6 +21,12 @@ export default function Home() {
 
         <section className="mb-12">
             <AnimationCustomizer />
+        </section>
+
+        <Separator className="my-12" />
+
+        <section className="mb-12">
+            <LayoutBuilder />
         </section>
 
         <Separator className="my-12" />
