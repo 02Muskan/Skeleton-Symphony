@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useAnimation, AnimationStyle } from '@/contexts/animation-context';
 
 const animationStyles = {
   subtle: {
@@ -48,16 +48,14 @@ const animationStyles = {
   },
 };
 
-type AnimationStyle = keyof typeof animationStyles;
-
 export default function AnimationCustomizer() {
-  const [style, setStyle] = useState<AnimationStyle>('subtle');
+  const { style, setStyle } = useAnimation();
 
   return (
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="font-headline">Animation Customizer</CardTitle>
-        <CardDescription>Generate and customize loader animations. Choose a style to see it in action.</CardDescription>
+        <CardDescription>Choose an animation style to see it applied to all skeleton loaders on the page.</CardDescription>
         <div className="pt-4">
           <Label htmlFor="animation-style">Animation Style</Label>
           <Select value={style} onValueChange={(value) => setStyle(value as AnimationStyle)}>

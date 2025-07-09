@@ -1,12 +1,35 @@
-import { cn } from "@/lib/utils"
+'use client';
 
-function Skeleton({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import { AnimationContext } from '@/contexts/animation-context';
+import type { AnimationStyle } from '@/contexts/animation-context';
+import React from 'react';
+
+const animationVariants: Record<AnimationStyle, any> = {
+  subtle: {
+    opacity: [0.7, 1, 0.7],
+    transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
+  },
+  playful: {
+    opacity: [0.5, 1, 0.5],
+    scale: [1, 1.01, 1],
+    transition: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' },
+  },
+  dramatic: {
+    opacity: [0.4, 1, 0.4],
+    transition: { duration: 1.2, repeat: Infinity, ease: 'circInOut' },
+  },
+};
+
+function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  const animationContext = React.useContext(AnimationContext);
+  const style = animationContext ? animationContext.style : 'subtle';
+  
   return (
-    <div
-      className={cn("animate-pulse rounded-md bg-muted", className)}
+    <motion.div
+      className={cn('rounded-md bg-muted', className)}
+      animate={animationVariants[style]}
       {...props}
     />
   )
