@@ -2,43 +2,64 @@
 
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { AnimationContext } from '@/contexts/animation-context';
+import { useAnimation } from '@/contexts/animation-context';
 import type { AnimationStyle } from '@/contexts/animation-context';
 import React from 'react';
 
-const animationVariants: Record<AnimationStyle, any> = {
+const animationVariants: Record<AnimationStyle, { animate: any; transition: any }> = {
   subtle: {
-    opacity: [0.7, 1, 0.7],
+    animate: { scale: [1, 1.05, 1], opacity: [1, 0.7, 1] },
     transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
   },
   playful: {
-    opacity: [0.5, 1, 0.5],
-    scale: [1, 1.01, 1],
+    animate: { scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] },
     transition: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' },
   },
   dramatic: {
-    opacity: [0.4, 1, 0.4],
-    transition: { duration: 1.2, repeat: Infinity, ease: 'circInOut' },
+    animate: {
+      scale: [1, 1.1, 1],
+      boxShadow: [
+        '0px 0px 0px hsl(var(--primary) / 0.5)',
+        '0px 0px 20px hsl(var(--primary) / 0.7)',
+        '0px 0px 0px hsl(var(--primary) / 0.5)',
+      ],
+    },
+    transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
   },
   energetic: {
-    opacity: [0.3, 1, 0.3],
-    scale: [1, 1.02, 1],
-    transition: { duration: 0.8, repeat: Infinity, ease: 'linear' },
+    animate: {
+      scale: [1, 1.15, 1],
+      opacity: [1, 0.8, 1],
+      backgroundColor: [
+        'hsl(var(--primary))',
+        'hsl(var(--accent))',
+        'hsl(var(--primary))',
+      ],
+    },
+    transition: { duration: 1, repeat: Infinity, ease: 'linear' },
   },
-  none: {},
+  none: {
+    animate: {},
+    transition: { duration: 0 },
+  },
 };
 
-function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  const animationContext = React.useContext(AnimationContext);
-  const style = animationContext ? animationContext.style : 'subtle';
-  
+function Skeleton({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  const { style } = useAnimation();
+
+  const selectedAnimation = animationVariants[style];
+
   return (
     <motion.div
       className={cn('rounded-md bg-muted', className)}
-      animate={animationVariants[style]}
+      animate={selectedAnimation.animate}
+      transition={selectedAnimation.transition}
       {...props}
     />
-  )
+  );
 }
 
-export { Skeleton }
+export { Skeleton };

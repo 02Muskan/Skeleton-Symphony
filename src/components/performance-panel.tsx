@@ -4,6 +4,7 @@ import React, { useState, Suspense, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
+import { useAnimation } from '@/contexts/animation-context';
 
 interface PerformancePanelProps {
   title: string;
@@ -23,6 +24,9 @@ export function PerformancePanel({
   const [isPending, startTransition] = useTransition();
   const [showContent, setShowContent] = useState(false);
   const [loadTime, setLoadTime] = useState<number | null>(null);
+
+  // By consuming the context here, we ensure this component re-renders when the style changes.
+  useAnimation();
 
   const handleLoad = () => {
     const startTime = performance.now();
