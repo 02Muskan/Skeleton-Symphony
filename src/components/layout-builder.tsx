@@ -35,7 +35,7 @@ const availableComponents: { type: ComponentType; icon: React.ReactNode; name: s
 function DraggableTool({ type, icon, name }: { type: ComponentType; icon: React.ReactNode; name: string }) {
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: `tool-${type}`,
-    data: { type },
+    data: { type, isTool: true },
   });
 
   return (
@@ -75,7 +75,7 @@ function SortableItem({ id, type }: { id: string; type: ComponentType }) {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id });
+  } = useSortable({ id: id, data: { type, isSortable: true } });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -119,39 +119,46 @@ export default function LayoutBuilder() {
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
-    if (!over) return;
-    
-    const activeIsTool = active.id.toString().startsWith('tool-');
-    const overIsCanvas = over.id === 'canvas-droppable';
-    const overIsItem = canvasItems.some(item => item.id === over.id);
+    if (!over) {
+      return;
+    }
 
-    if (activeIsTool && (overIsCanvas || overIsItem)) {
+    const isDraggingTool = active.data.current?.isTool;
+    const isDraggingItem = active.data.current?.isSortable;
+
+    // Dragging a new tool to the canvas
+    if (isDraggingTool) {
       const type = active.data.current?.type as ComponentType;
-      
       const newItem = { id: `item-${Date.now()}`, type };
       
-      if (overIsItem) {
-          const overIndex = canvasItems.findIndex(item => item.id === over.id);
-          setCanvasItems(items => {
-              const newItems = [...items];
-              newItems.splice(overIndex + 1, 0, newItem);
-              return newItems;
-          });
-      } else {
-          setCanvasItems(items => [...items, newItem]);
+      // Dropping on an existing item
+      if (over.data.current?.isSortable) {
+        const overIndex = canvasItems.findIndex(item => item.id === over.id);
+        setCanvasItems(items => {
+            const newItems = [...items];
+            newItems.splice(overIndex, 0, newItem);
+            return newItems;
+        });
+      } 
+      // Dropping on the canvas itself
+      else if (over.id === 'canvas-droppable') {
+        setCanvasItems(items => [...items, newItem]);
       }
       return;
     }
 
-    const activeIsItem = canvasItems.some(item => item.id === active.id);
-    if (activeIsItem && overIsItem && active.id !== over.id) {
-      setCanvasItems((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
-        return arrayMove(items, oldIndex, newIndex);
-      });
+    // Reordering existing items
+    if (isDraggingItem && over.data.current?.isSortable) {
+      if (active.id !== over.id) {
+        setCanvasItems((items) => {
+          const oldIndex = items.findIndex((item) => item.id === active.id);
+          const newIndex = items.findIndex((item) => item.id === over.id);
+          return arrayMove(items, oldIndex, newIndex);
+        });
+      }
     }
   }
+
 
   return (
     <Card className="w-full">
