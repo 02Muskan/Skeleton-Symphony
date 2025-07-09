@@ -3,6 +3,7 @@
 import React from 'react';
 import CardSkeleton from '@/components/skeletons/card-skeleton';
 import TableSkeleton from '@/components/skeletons/table-skeleton';
+import ReviewSkeleton from '@/components/skeletons/review-skeleton';
 import { PerformancePanel } from '@/components/performance-panel';
 import Header from '@/components/header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -13,6 +14,7 @@ import { AnimationProvider } from '@/contexts/animation-context';
 
 const LazySampleCard = React.lazy(() => import('@/components/content/sample-card'));
 const LazySampleTable = React.lazy(() => import('@/components/content/sample-table'));
+const LazySampleReview = React.lazy(() => import('@/components/content/sample-review'));
 
 export default function Home() {
   return (
@@ -33,12 +35,13 @@ export default function Home() {
 
           <Separator className="my-12" />
 
-          <h2 className="text-3xl font-bold text-center mb-8 font-headline">Performance Comparison</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 font-headline md:text-4xl">Performance Comparison</h2>
 
           <Tabs defaultValue="card" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 md:w-1/2 mx-auto">
+            <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 mx-auto sm:w-3/4 md:w-1/2">
               <TabsTrigger value="card">Card Component</TabsTrigger>
               <TabsTrigger value="table">Table Component</TabsTrigger>
+              <TabsTrigger value="review">Review Component</TabsTrigger>
             </TabsList>
             
             <TabsContent value="card" className="mt-8">
@@ -81,6 +84,28 @@ export default function Home() {
                   SkeletonComponent={TableSkeleton}
                 >
                   <LazySampleTable />
+                </PerformancePanel>
+              </div>
+            </TabsContent>
+
+             <TabsContent value="review" className="mt-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <PerformancePanel
+                  title="With Skeleton"
+                  description="The review layout is clear, even before the text and stars appear."
+                  useSkeleton={true}
+                  SkeletonComponent={ReviewSkeleton}
+                >
+                  <LazySampleReview />
+                </PerformancePanel>
+                
+                <PerformancePanel
+                  title="Without Skeleton"
+                  description="The user sees a loading spinner, unsure of what content to expect."
+                  useSkeleton={false}
+                  SkeletonComponent={ReviewSkeleton}
+                >
+                  <LazySampleReview />
                 </PerformancePanel>
               </div>
             </TabsContent>
