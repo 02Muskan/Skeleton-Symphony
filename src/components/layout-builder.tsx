@@ -107,14 +107,47 @@ function SortableItem({ id, type }: { id: string; type: ComponentType }) {
   );
 }
 
+
+function Toolbox() {
+    return (
+        <div className="md:col-span-1 p-4 rounded-lg border bg-muted/50">
+            <h3 className="text-lg font-semibold mb-4">Toolbox</h3>
+            <div className="space-y-3">
+            {availableComponents.map(comp => (
+                <DraggableTool key={comp.type} type={comp.type} icon={comp.icon} name={comp.name} />
+            ))}
+            </div>
+        </div>
+    );
+}
+
+function Canvas({ items }: { items: { id: string; type: ComponentType }[] }) {
+    const { setNodeRef } = useDroppable({
+        id: 'canvas-droppable',
+    });
+
+    return (
+        <div ref={setNodeRef} className="md:col-span-2 lg:col-span-3 p-4 rounded-lg border-2 border-dashed min-h-[400px] bg-background/50">
+            <SortableContext items={items.map(i => i.id)} strategy={verticalListSortingStrategy}>
+                <div className="space-y-4">
+                    {items.length > 0 ? items.map(({ id, type }) => (
+                        <SortableItem key={id} id={id} type={type} />
+                    )) : (
+                        <div className="flex flex-col items-center justify-center h-full text-muted-foreground pt-24 text-center">
+                            <p>Drop components here to build your layout.</p>
+                        </div>
+                    )}
+                </div>
+            </SortableContext>
+        </div>
+    );
+}
+
+
 export default function LayoutBuilder() {
   const [canvasItems, setCanvasItems] = useState<{ id: string; type: ComponentType }[]>([]);
 
   const sensors = useSensors(useSensor(PointerSensor));
-  
-  const { setNodeRef: droppableRef } = useDroppable({
-    id: 'canvas-droppable',
-  });
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -169,28 +202,8 @@ export default function LayoutBuilder() {
         <CardContent>
             <DndContext sensors={sensors} onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                    <div className="md:col-span-1 p-4 rounded-lg border bg-muted/50">
-                        <h3 className="text-lg font-semibold mb-4">Toolbox</h3>
-                        <div className="space-y-3">
-                        {availableComponents.map(comp => (
-                            <DraggableTool key={comp.type} type={comp.type} icon={comp.icon} name={comp.name} />
-                        ))}
-                        </div>
-                    </div>
-
-                    <div ref={droppableRef} className="md:col-span-2 lg:col-span-3 p-4 rounded-lg border-2 border-dashed min-h-[400px] bg-background/50">
-                        <SortableContext items={canvasItems.map(i => i.id)} strategy={verticalListSortingStrategy}>
-                            <div className="space-y-4">
-                                {canvasItems.length > 0 ? canvasItems.map(({ id, type }) => (
-                                    <SortableItem key={id} id={id} type={type} />
-                                )) : (
-                                    <div className="flex flex-col items-center justify-center h-full text-muted-foreground pt-24 text-center">
-                                        <p>Drop components here to build your layout.</p>
-                                    </div>
-                                )}
-                            </div>
-                        </SortableContext>
-                    </div>
+                    <Toolbox />
+                    <Canvas items={canvasItems} />
                 </div>
             </DndContext>
         </CardContent>
