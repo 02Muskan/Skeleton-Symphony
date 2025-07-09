@@ -72,7 +72,7 @@ export default function Home() {
                 SkeletonComponent={TableSkeleton}
               >
                 <LazySampleTable />
-              </Panel>
+              </PerformancePanel>
             </div>
           </TabsContent>
         </Tabs>
